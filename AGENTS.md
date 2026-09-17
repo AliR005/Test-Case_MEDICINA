@@ -27,12 +27,12 @@
 * pytest
 * Docker / Docker Compose
 
-Управление зависимостями — на выбор:
+Управление зависимостями — `uv` (канонично для проекта):
 
-* `pip` + `requirements.txt`;
-* `uv`;
-* Poetry;
-* другой стандартный инструмент.
+* `pyproject.toml` + `uv.lock`;
+* Python 3.11 (см. `.python-version`);
+* команды: `uv sync`, `uv run pytest`, `uv add <pkg>`;
+* `requirements.txt` не используется.
 
 ## 3. Основные принципы
 

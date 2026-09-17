@@ -5,6 +5,7 @@
 """
 
 from datetime import date
+import uuid
 
 import sqlalchemy as sa
 from sqlalchemy.orm import Session, joinedload
@@ -72,8 +73,12 @@ class CheckRepository:
         )
 
     def get(self, check_id: str) -> Check | None:
+        try:
+            key = uuid.UUID(str(check_id))
+        except ValueError:
+            return None
         return self.db.scalar(
             sa.select(Check)
             .options(joinedload(Check.documents), joinedload(Check.issues))
-            .where(Check.id == check_id)
+            .where(Check.id == key)
         )

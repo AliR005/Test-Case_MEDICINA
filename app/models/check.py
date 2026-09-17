@@ -1,9 +1,8 @@
 import uuid
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 
 import sqlalchemy as sa
 from sqlalchemy import UniqueConstraint
-from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base
@@ -38,9 +37,11 @@ class Check(Base):
     )
     status_label: Mapped[str | None] = mapped_column(sa.String(255))
     reason: Mapped[str | None] = mapped_column(sa.Text)
-    extracted: Mapped[dict | None] = mapped_column(JSONB)
+    extracted: Mapped[dict | None] = mapped_column(sa.JSON)
     checked_at: Mapped[datetime] = mapped_column(
-        sa.DateTime(timezone=True), nullable=False, server_default=sa.func.now()
+        sa.DateTime(timezone=True),
+        nullable=False,
+        default=lambda: datetime.now(timezone.utc),
     )
 
     documents: Mapped[list["Document"]] = relationship(
